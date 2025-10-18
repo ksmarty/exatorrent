@@ -1,6 +1,6 @@
 import { writable, get } from 'svelte/store';
 import type { Writable } from 'svelte/store';
-import slocation from 'slocation';
+import slocation from './slocation';
 import { toast } from 'svelte-sonner';
 
 export interface DlObject {
@@ -111,6 +111,8 @@ interface DiskStats {
   used: number;
   usedPercent: number;
 }
+
+const { NO_AUTH = false }: { NO_AUTH: boolean } = (window as any).ENV ?? {};
 
 export let socket: WebSocket;
 export const isSignedIn = writable(false);
@@ -227,8 +229,8 @@ let werrorfn = () => {
 };
 
 export let Connect = () => {
-  un = localStorage.getItem('exausername');
-  pw = localStorage.getItem('exapassword');
+  un = NO_AUTH ? 'adminuser' : localStorage.getItem('exausername');
+  pw = NO_AUTH ? 'adminpassword' : localStorage.getItem('exapassword');
 
   if (un != '' && un != undefined && un != null) {
     if (pw != '' && pw != undefined && pw != null) {
